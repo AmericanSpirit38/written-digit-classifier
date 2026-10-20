@@ -1,9 +1,10 @@
 import tkinter as tk
 import numpy as np
 from PIL import Image, ImageDraw
+import cv2
+
 SIZE = 280
 BRUSH_SIZE = 10
-import cv2
 
 class App:
     def __init__(self):
