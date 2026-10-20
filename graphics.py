@@ -64,4 +64,3 @@ class App:
     def predict(self):
         print("Predicting...")
         image = np.array(self.image)
-        cv2.imshow("neger", image)
