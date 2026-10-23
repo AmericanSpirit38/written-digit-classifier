@@ -23,8 +23,8 @@ class App:
         try:
             self.clear_root()
         except:
-            pass
-        self.root = tk.Tk()
+            self.root = tk.Tk()
+        self.root.configure(background="white")
         self.root.geometry("600x400")
         self.root.resizable(False, False)
         self.root.title("Menu")
@@ -41,7 +41,7 @@ class App:
         )
 
         self.welcome_text.pack(pady=20)
-        button_frame = tk.Frame(self.root)
+        button_frame = tk.Frame(self.root, background="white")
         button_frame.pack(anchor="center")
 
         self.start_mnist_button = tk.Button(
@@ -80,13 +80,40 @@ class App:
 
         self.start_mnist_button.pack(side="left", padx=5, pady=5)
         self.start_dataset_maker_button.pack(side="right", padx=5, pady=5)
-
     def Mnist(self):
         self.clear_root()
 
         self.root.title("Mnist Classifier")
-        self.canvas = tk.Canvas(self.root, width=SIZE, height=SIZE, background="black")
-        self.canvas.pack()
+        self.canvas_menu_frame = tk.Frame(self.root, background="white")
+        self.canvas_menu_frame.pack(fill="both", expand=True, pady=5)
+
+
+        self.menu_button = tk.Button(
+            self.canvas_menu_frame,
+            text="Menu",
+            font=("Segoe UI", 10, "bold"),
+            fg="black",
+            bg="#b5b7b5",
+            activeforeground="white",
+            activebackground="#1D4ED8",
+            relief="flat",
+            borderwidth=0,
+            cursor="hand2",
+            padx=24,
+            pady=8,
+            command=self.menu
+        )
+        self.menu_button.place(relx=0.1, rely=0.1, anchor="center")
+        self.canvas = tk.Canvas(self.canvas_menu_frame, width=SIZE, height=SIZE, background="black")
+        self.canvas.place(relx=0.45, rely=0.5, anchor="center")
+        self.prediction_result_text = tk.Label(
+            self.canvas_menu_frame,
+            text="Prediction:\nConfidence:",
+            font=("Segoe UI", 12, "bold"),
+            fg="black",
+            bg="white"
+        )
+        self.prediction_result_text.place(relx=0.85, rely=0.5, anchor="center")
         self.canvas.bind("<B1-Motion>", self.paint)
         self.root.bind("<Delete>", self.clear)
         self.canvas.focus_set()
@@ -159,5 +186,9 @@ class App:
         digit = predicted.item()
         confidence_percent = confidence.item() * 100
 
+
         print(f"Predicted digit: {digit}")
         print(f"Confidence: {confidence_percent:.2f}%")
+        result_text = f"Prediction: {digit}\nConfidence: {confidence_percent:.2f}%"
+        self.prediction_result_text.config(text=result_text)
+        self.prediction_result_text.update()
